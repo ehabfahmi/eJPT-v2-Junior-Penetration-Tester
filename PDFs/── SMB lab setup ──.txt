@@ -1,0 +1,53 @@
+── SMB lab setup ──
+
+# ── Disable Windows Firewall (lab only) ──
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+
+# ── Enable SMBv1 (to practice legacy vulnerabilities) ──
+Enable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart
+
+# ── Enable SMBv2 and SMBv3 (already on by default) ──
+Set-SmbServerConfiguration -EnableSMB2Protocol $true -Force
+
+# ── Disable SMB Signing (enables relay attack practice) ──
+Set-SmbServerConfiguration -RequireSecuritySignature $false -Force
+Set-SmbServerConfiguration -EnableSecuritySignature $false -Force
+
+# ── Confirm settings ──
+Get-SmbServerConfiguration | Select EnableSMB1Protocol,EnableSMB2Protocol,RequireSecuritySignature
+
+
+# ── Create users with weak passwords ──
+net user alice Password123 /add
+net user bob 123456 /add
+net user admin admin123 /add
+net user guest1 "" /add
+
+# ── Add admin to local admins group ──
+net localgroup Administrators admin /add
+
+# ── Verify users created ──
+net user
+
+
+# ── Create folders ──
+New-Item -ItemType Directory -Path C:\Shares\Public
+New-Item -ItemType Directory -Path C:\Shares\Private
+New-Item -ItemType Directory -Path C:\Shares\IT
+New-Item -ItemType Directory -Path C:\Shares\Finance
+
+# ── Create some fake sensitive files ──
+echo "admin:Password123" > C:\Shares\IT\credentials.txt
+echo "DB_PASS=Sup3rS3cr3t" > C:\Shares\IT\config.txt
+echo "Q4 Revenue: $2.5M" > C:\Shares\Finance\report.txt
+echo "This is a public share" > C:\Shares\Public\readme.txt
+
+# ── Share the folders ──
+New-SmbShare -Name "Public"  -Path "C:\Shares\Public"  -FullAccess Everyone
+New-SmbShare -Name "Private" -Path "C:\Shares\Private" -ReadAccess Everyone
+New-SmbShare -Name "IT"      -Path "C:\Shares\IT"      -FullAccess "labuser"
+New-SmbShare -Name "Finance" -Path "C:\Shares\Finance" -ReadAccess "alice","bob"
+
+# ── Verify shares ──
+Get-SmbShare
+
